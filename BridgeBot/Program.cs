@@ -27,6 +27,10 @@ namespace BridgeBot
             Console.WriteLine();
             Console.WriteLine("Printing Bridge Puzzle After Solving..");
             BridgePuzzle.PrintSolved(puzzle);
+        
+            // Bot.Create(puzzleType).With(IList<RuleBase>).Solve();
+            // How to do this in functional pattern ?
+            // Zoran Horvat
         }
 
         private static void AddRules(Bot.BridgeBot bot)

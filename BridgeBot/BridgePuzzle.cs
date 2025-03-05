@@ -32,7 +32,7 @@ namespace BridgeBot
             ThrowIfVerifyBoundsFails(cell);
             VerifyPuzzleState();
             
-            List<Tuple<Cell?, int>> cellEdges = new();
+            List<Tuple<Cell?, int>> cellEdges = [];
             List<Cell?> neighbors = GetCurrentCellNeighbors(cell);
         
 
@@ -188,8 +188,6 @@ namespace BridgeBot
             return currentNeighbors;
         }
 
-
-
         public int CountEdges(Cell c1, Cell c2)
         {
             ThrowIfVerifyBoundsFails(c1);
@@ -260,7 +258,6 @@ namespace BridgeBot
                 tc = tc + move;
             }
         }
-
 
 
         private bool VerifyBounds(Cell cell)
@@ -450,7 +447,6 @@ namespace BridgeBot
         public int Size { get; set; }
         public Difficulty? Difficulty { get; set; }
         public int[,]? Grid { get; private set; }
-
         public int[,]? OriginalGrid { get; private set; }
     }
 
