@@ -1,6 +1,6 @@
-﻿using CommandLine;
-using BrainBashersSolver.Common;
+﻿using BrainBashersSolver.Common;
 using BrainBashersSolver.Common.Abstract;
+using CommandLine;
 
 namespace BridgeSolver
 {
@@ -38,10 +38,11 @@ namespace BridgeSolver
             bool success = true;
             options = new BridgeOptions();
 
-            var results = Parser.Default.ParseArguments<BridgeOptions>(args).WithParsed(options => {
-                if(!string.IsNullOrEmpty(options.PuzzleFile))
+            var results = Parser.Default.ParseArguments<BridgeOptions>(args).WithParsed(options =>
+            {
+                if (!string.IsNullOrEmpty(options.PuzzleFile))
                 {
-                    if(!File.Exists(options.PuzzleFile))
+                    if (!File.Exists(options.PuzzleFile))
                     {
                         Console.WriteLine($"Provided file : ${options.PuzzleFile} does not exist");
                         Console.WriteLine("Since --puzzlefile is not empty , other args were not parsed");

@@ -9,7 +9,7 @@ namespace BridgeSolver
     {
         public BridgePuzzle(BridgeOptions options)
         {
-            if(options.PuzzleFile is not null)
+            if (options.PuzzleFile is not null)
             {
                 Load(options.PuzzleFile);
             }

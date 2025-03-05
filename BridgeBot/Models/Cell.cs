@@ -8,7 +8,7 @@ namespace BridgeBot.Models
             Y = y;
         }
 
-        public Cell(Tuple<int,int> tuple)
+        public Cell(Tuple<int, int> tuple)
         {
             X = tuple.Item1;
             Y = tuple.Item2;
@@ -20,7 +20,7 @@ namespace BridgeBot.Models
             Y = cell.Y;
         }
 
-        public Tuple<int,int> ToTuple()
+        public Tuple<int, int> ToTuple()
         {
             return new Tuple<int, int>(X, Y);
         }
@@ -52,6 +52,14 @@ namespace BridgeBot.Models
         public override string ToString()
         {
             return $"[ {X}, {Y} ]";
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is null)
+                return false;
+
+            return Equals(obj as Cell);
         }
     }
 }

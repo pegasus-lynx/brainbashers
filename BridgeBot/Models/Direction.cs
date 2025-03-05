@@ -66,7 +66,7 @@ namespace BridgeBot.Models
             Cell c = c2 - c1;
             if (c.X != 0 && c.Y != 0)
                 return null;
-            
+
             if (c.X == 0 && c.Y > 0)
                 return DirectionUnit.Right;
             if (c.X == 0 && c.Y < 0)
@@ -75,15 +75,15 @@ namespace BridgeBot.Models
                 return DirectionUnit.Up;
             if (c.X > 0 && c.Y == 0)
                 return DirectionUnit.Down;
-            
+
             return null;
         }
 
-        public static List<Cell> DirectionsList => new List<Cell> { Up, Down, Right, Left };
+        public static List<Cell> DirectionsList => [Up, Down, Right, Left];
 
-        private static Cell _left = new Cell(0, -1);
-        private static Cell _right = new Cell(0, 1);
-        private static Cell _down = new Cell(1, 0);
-        private static Cell _up = new Cell(-1, 0);
+        private static readonly Cell _left = new(0, -1);
+        private static readonly Cell _right = new(0, 1);
+        private static readonly Cell _down = new(1, 0);
+        private static readonly Cell _up = new(-1, 0);
     }
 }

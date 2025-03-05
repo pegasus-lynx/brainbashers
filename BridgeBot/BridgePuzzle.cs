@@ -31,16 +31,16 @@ namespace BridgeBot
         {
             ThrowIfVerifyBoundsFails(cell);
             VerifyPuzzleState();
-            
+
             List<Tuple<Cell?, int>> cellEdges = [];
             List<Cell?> neighbors = GetCurrentCellNeighbors(cell);
-        
 
-            foreach(DirectionUnit unit in Enum.GetValues(typeof(DirectionUnit)))
+
+            foreach (DirectionUnit unit in Enum.GetValues<DirectionUnit>())
             {
                 Cell? neighbor = neighbors[(int)unit];
 
-                if(neighbor is null)
+                if (neighbor is null)
                 {
                     cellEdges.Add(new Tuple<Cell?, int>(null, 0));
                     continue;
@@ -55,7 +55,7 @@ namespace BridgeBot
                 if (val > 0)
                     throw new Exception("Not prepared for adjacent cells");
 
-                if(val == 0)
+                if (val == 0)
                 {
                     // No edges
                     cellEdges.Add(new Tuple<Cell?, int>(neighbor, 0));
@@ -64,13 +64,13 @@ namespace BridgeBot
                 else
                 {
                     // There are edges
-                    if(unit == DirectionUnit.Up || unit == DirectionUnit.Down)
+                    if (unit == DirectionUnit.Up || unit == DirectionUnit.Down)
                     {
                         cellEdges.Add(new Tuple<Cell?, int>(neighbor, Math.Abs(val)));
                     }
                     else
                     {
-                        cellEdges.Add(new Tuple<Cell?, int>(neighbor, Math.Abs(val+2)));
+                        cellEdges.Add(new Tuple<Cell?, int>(neighbor, Math.Abs(val + 2)));
                     }
                 }
             }
@@ -98,9 +98,9 @@ namespace BridgeBot
             VerifyPuzzleState();
 
             List<Tuple<Cell?, int>> cellEdges = CurrentCellEdges(cell);
-            List<Tuple<Cell?, int>> remainingEdges = new();
+            List<Tuple<Cell?, int>> remainingEdges = [];
 
-            foreach(var cellEdgePair in cellEdges)
+            foreach (var cellEdgePair in cellEdges)
             {
                 Cell? neighbor = cellEdgePair.Item1;
                 if (neighbor is null)
@@ -123,17 +123,17 @@ namespace BridgeBot
             ThrowIfVerifyBoundsFails(cell);
             VerifyPuzzleState();
 
-            List<Cell?> allNeighbors = new();
-            foreach(Cell move in Direction.DirectionsList)
+            List<Cell?> allNeighbors = [];
+            foreach (Cell move in Direction.DirectionsList)
             {
-                Cell tc = new Cell(cell);
-                tc = tc + move;
-                while(VerifyBounds(tc))
+                Cell tc = new(cell);
+                tc += move;
+                while (VerifyBounds(tc))
                 {
                     if (Grid![tc.X, tc.Y] > 0)
                         break;
 
-                    tc = tc + move;
+                    tc += move;
                 }
 
                 allNeighbors.Add(VerifyBounds(tc) ? tc : null);
@@ -147,8 +147,8 @@ namespace BridgeBot
             ThrowIfVerifyBoundsFails(cell);
             VerifyPuzzleState();
 
-            List<Cell?> currentNeighbors = new();
-            foreach (DirectionUnit unit in Enum.GetValues(typeof(DirectionUnit)))
+            List<Cell?> currentNeighbors = [];
+            foreach (DirectionUnit unit in Enum.GetValues<DirectionUnit>())
             {
                 Cell move = Direction.FromUnit(unit);
 
@@ -159,9 +159,9 @@ namespace BridgeBot
                 {
                     int val = Grid![tc.X, tc.Y];
 
-                    if(val < 0)
+                    if (val < 0)
                     {
-                        if(unit == DirectionUnit.Up || unit == DirectionUnit.Down)
+                        if (unit == DirectionUnit.Up || unit == DirectionUnit.Down)
                         {
                             if (val < -2)
                                 break;
@@ -179,7 +179,7 @@ namespace BridgeBot
                         break;
                     }
 
-                    tc = tc + move;
+                    tc += move;
                 }
 
                 currentNeighbors.Add(addNeighbor ? tc : null);
@@ -208,7 +208,7 @@ namespace BridgeBot
             if (val > 0)
                 throw new Exception("This should not have happened. Oopsies !!");
 
-            if(unit == DirectionUnit.Up || unit == DirectionUnit.Down)
+            if (unit == DirectionUnit.Up || unit == DirectionUnit.Down)
             {
                 if (val < -2)
                     return 0;
@@ -239,23 +239,23 @@ namespace BridgeBot
             if (edges + count > 2)
                 throw new Exception("Cannot create more than two edges between two cells");
 
-            int val = 0;
+            int val;
             if (unit == DirectionUnit.Down || unit == DirectionUnit.Up)
             {
-                val = edges+count == 1 ? -1 : -2;
+                val = edges + count == 1 ? -1 : -2;
             }
             else
             {
-                val = edges+count == 1 ? -3 : -4;
+                val = edges + count == 1 ? -3 : -4;
             }
 
             Cell move = Direction.FromUnit((DirectionUnit)unit);
 
             Cell tc = c1 + move;
-            while(tc != c2)
+            while (tc != c2)
             {
                 Grid![tc.X, tc.Y] = val;
-                tc = tc + move;
+                tc += move;
             }
         }
 
@@ -285,7 +285,7 @@ namespace BridgeBot
             string content = await GetPuzzlePageContent(url);
             CreatePuzzle(content);
         }
-        
+
         public static BridgePuzzle LoadFromFile(string filePath)
         {
             string content = File.ReadAllText(filePath);
@@ -295,7 +295,7 @@ namespace BridgeBot
 
             Debug.Assert(cells.Count == (size * size), $"Not a perfect square. Cells = {cells.Count}, Size = {size}");
             int[,] grid = new int[size, size];
-            for(int k=0;k<cells.Count;k++)
+            for (int k = 0; k < cells.Count; k++)
             {
                 grid[k / size, k % size] = cells[k];
             }
@@ -305,14 +305,14 @@ namespace BridgeBot
 
         private static List<int> ProcessFileContent(string content)
         {
-            List<int> cells = new();
-            foreach(string part in content.Split('<'))
+            List<int> cells = [];
+            foreach (string part in content.Split('<'))
             {
-                if(part.StartsWith("img"))
+                if (part.StartsWith("img"))
                 {
-                    foreach(string attr in part.Split(" "))
+                    foreach (string attr in part.Split(" "))
                     {
-                        if(attr.Contains("src"))
+                        if (attr.Contains("src"))
                         {
                             string value = attr.Split("=")[1];
                             if (value.Contains("x.png"))
@@ -335,15 +335,15 @@ namespace BridgeBot
                             {
                                 cells.Add(4);
                             }
-                            else if(value.Contains("5w.png"))
+                            else if (value.Contains("5w.png"))
                             {
                                 cells.Add(5);
                             }
-                            else if(value.Contains("6w.png"))
+                            else if (value.Contains("6w.png"))
                             {
                                 cells.Add(6);
                             }
-                            else if(value.Contains("7w.png"))
+                            else if (value.Contains("7w.png"))
                             {
                                 cells.Add(7);
                             }
@@ -357,44 +357,42 @@ namespace BridgeBot
                     }
                 }
             }
-            
+
             return cells;
         }
 
         private static async Task<string> GetPuzzlePageContent(string url)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                return await client.GetStringAsync(url);
-            }
+            using HttpClient client = new();
+            return await client.GetStringAsync(url);
         }
-        
+
         private string GetPuzzleUrl()
         {
             return $"https://www.brainbashers.com/showbridges.asp?" +
                         $"date={DateString}&size={Size}&diff={Difficulty}";
         }
-        
+
         private void CreatePuzzle(string content)
         {
             throw new NotImplementedException();
         }
 
         #endregion
-        
+
         public static void Print(BridgePuzzle puzzle)
         {
-            if(puzzle.Grid is null)
+            if (puzzle.Grid is null)
             {
                 Console.WriteLine("No Grid in puzzle");
                 return;
             }
 
-            Console.WriteLine($"Date : {puzzle.DateString?.Substring(2)}/{puzzle.DateString?.Substring(0,2)} , Size : {puzzle.Size} , Difficulty : {puzzle.Difficulty}");
+            Console.WriteLine($"Date : {puzzle.DateString?[2..]}/{puzzle.DateString?[..2]} , Size : {puzzle.Size} , Difficulty : {puzzle.Difficulty}");
             Console.WriteLine("------------------------------------------------------------------------");
-            for(int i=0;i<puzzle.Size;i++)
+            for (int i = 0; i < puzzle.Size; i++)
             {
-                for(int j=0;j<puzzle.Size;j++)
+                for (int j = 0; j < puzzle.Size; j++)
                 {
                     Console.Write(puzzle.Grid[i, j]);
                     Console.Write(" ");
@@ -412,7 +410,7 @@ namespace BridgeBot
                 return;
             }
 
-            Console.WriteLine($"Date : {puzzle.DateString?.Substring(2)}/{puzzle.DateString?.Substring(0, 2)} , Size : {puzzle.Size} , Difficulty : {puzzle.Difficulty}");
+            Console.WriteLine($"Date : {puzzle.DateString?[2..]}/{puzzle.DateString?[..2]} , Size : {puzzle.Size} , Difficulty : {puzzle.Difficulty}");
             Console.WriteLine("------------------------------------------------------------------------");
             for (int i = 0; i < puzzle.Size; i++)
             {

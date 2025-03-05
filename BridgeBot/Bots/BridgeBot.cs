@@ -1,5 +1,5 @@
-﻿using BridgeBot.Rules;
-using BridgeBot.Models;
+﻿using BridgeBot.Models;
+using BridgeBot.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +14,10 @@ namespace BridgeBot.Bots
 
         public BridgeBot(List<RuleBase> rules)
         {
-            Rules = rules is null ? new() : rules;
+            Rules = rules is null ? [] : rules;
         }
 
-    
+
         public void AddRule(RuleBase rule)
         {
             Rules.Add(rule);
@@ -39,20 +39,20 @@ namespace BridgeBot.Bots
             int size = puzzle.Size;
             bool newEdges = true;
 
-            while(newEdges)
+            while (newEdges)
             {
                 Console.WriteLine($"Running iteration {iteration++}");
                 Console.WriteLine("----------------------------");
                 newEdges = false;
 
-                for(int i=0;i<size;i++)
+                for (int i = 0; i < size; i++)
                 {
-                    for(int j=0;j<size;j++)
+                    for (int j = 0; j < size; j++)
                     {
-                        if(puzzle.MaxCellEdges(new Cell(i,j)) > 0)
+                        if (puzzle.MaxCellEdges(new Cell(i, j)) > 0)
                         {
                             Console.WriteLine($"Checking Cell : {i} , {j}");
-                            foreach(RuleBase rule in Rules)
+                            foreach (RuleBase rule in Rules)
                             {
                                 if (rule.CanApply(puzzle, new Cell(i, j)))
                                 {
@@ -69,9 +69,9 @@ namespace BridgeBot.Bots
                 Console.WriteLine("----------------------------");
             }
         }
-        
-        public List<RuleBase> Rules { get; } = new();
-    
-    
+
+        public List<RuleBase> Rules { get; } = [];
+
+
     }
 }

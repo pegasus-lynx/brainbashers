@@ -26,7 +26,7 @@ namespace BrainBashersSolver.Common
             string month = dateString[..2];
             string day = dateString[2..];
 
-            if(int.TryParse(month, out int monthInt) && int.TryParse(day, out int dayInt))
+            if (int.TryParse(month, out int monthInt) && int.TryParse(day, out int dayInt))
             {
                 date = new DateTime(2000, monthInt, dayInt);
                 return true;

@@ -15,7 +15,7 @@ namespace BridgeSolver.Data
             End = end;
         }
 
-        public Vector(Point end) : this(new Point(0,0), end) { }
+        public Vector(Point end) : this(new Point(0, 0), end) { }
 
         public DirectionEnum Direction
         {
@@ -27,7 +27,7 @@ namespace BridgeSolver.Data
                 if (dx == 0 && dy == 0)
                     return DirectionEnum.None;
 
-                if(dx == 0 || dy == 0)
+                if (dx == 0 || dy == 0)
                 {
                     if (dx == 0 && dy > 0)
                         return DirectionEnum.Right;
@@ -54,18 +54,14 @@ namespace BridgeSolver.Data
 
         public static Vector GetUnitVector(DirectionEnum direction)
         {
-            switch(direction)
+            return direction switch
             {
-                case DirectionEnum.Up:
-                    return Up;
-                case DirectionEnum.Down:
-                    return Down;
-                case DirectionEnum.Right:
-                    return Right;
-                case DirectionEnum.Left:
-                    return Left;
-            }
-            return None;
+                DirectionEnum.Up => Up,
+                DirectionEnum.Down => Down,
+                DirectionEnum.Right => Right,
+                DirectionEnum.Left => Left,
+                _ => None,
+            };
         }
 
         public static Vector Up => new Vector(new Point(-1, 0));

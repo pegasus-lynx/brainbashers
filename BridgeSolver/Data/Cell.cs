@@ -8,13 +8,13 @@ namespace BridgeSolver.Data
 {
     public class Cell
     {
-        public Cell(Point? position = null, string value=" ")
+        public Cell(Point? position = null, string value = " ")
         {
             Position = position;
             Value = value;
         }
 
-        public Cell(int x, int y, string value="  ")
+        public Cell(int x, int y, string value = "  ")
         {
             Position = new Point(x, y);
             Value = value;

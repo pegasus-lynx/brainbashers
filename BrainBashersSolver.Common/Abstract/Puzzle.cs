@@ -13,6 +13,6 @@ namespace BrainBashersSolver.Common.Abstract
         public int Size { get; set; }
 
         public abstract void Solve();
-        public abstract void Print(bool solved=false);
+        public abstract void Print(bool solved = false);
     }
 }

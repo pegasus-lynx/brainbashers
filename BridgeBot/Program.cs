@@ -10,24 +10,24 @@ namespace BridgeBot
     {
         private static void Main(string[] args)
         {
-            string[] testargs = new string[] { "C:\\personal\\repos\\brainbashers\\Data\\0221-10-Easy.txt" };
-            
+            string[] testargs = ["C:\\personal\\repos\\brainbashers\\Data\\0221-10-Easy.txt"];
+
             Console.WriteLine("Hello World !");
-            
+
             Console.WriteLine("Creating Bridge Puzzle...");
             BridgePuzzle puzzle = CreateBridgePuzzleFromArgs(testargs);
-            
+
             Console.WriteLine("Printing Bridge Puzzle...");
             BridgePuzzle.Print(puzzle);
 
-            Bot.BridgeBot bot = new Bot.BridgeBot();
+            Bot.BridgeBot bot = new();
             AddRules(bot);
             bot.Solve(puzzle);
 
             Console.WriteLine();
             Console.WriteLine("Printing Bridge Puzzle After Solving..");
             BridgePuzzle.PrintSolved(puzzle);
-        
+
             // Bot.Create(puzzleType).With(IList<RuleBase>).Solve();
             // How to do this in functional pattern ?
             // Zoran Horvat
@@ -47,14 +47,14 @@ namespace BridgeBot
 
         private static BridgePuzzle CreateBridgePuzzleFromArgs(string[] args)
         {
-            if(args.Length != 1 && args.Length != 3)
+            if (args.Length != 1 && args.Length != 3)
                 throw new ArgumentException("The arguments list is wrong");
 
 
-            if(args.Length == 1)
+            if (args.Length == 1)
             {
                 string filePath = args[0];
-                
+
                 if (!File.Exists(filePath))
                     throw new FileNotFoundException($"File not found : {filePath}");
 
@@ -65,7 +65,7 @@ namespace BridgeBot
             string size = args[1];
             string difficulty = args[2];
 
-            return new BridgePuzzle(dateString, int.Parse(size), (Difficulty)Enum.Parse(typeof(Difficulty), difficulty, true));
+            return new BridgePuzzle(dateString, int.Parse(size), Enum.Parse<Difficulty>(difficulty, true));
         }
     }
 }

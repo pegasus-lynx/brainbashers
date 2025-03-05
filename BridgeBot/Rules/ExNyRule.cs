@@ -1,5 +1,5 @@
-using System;
 using BridgeBot.Models;
+using System;
 
 
 namespace BridgeBot.Rules
@@ -8,7 +8,7 @@ namespace BridgeBot.Rules
     {
         public ExNyRule(int edgesCount, int neighborsCount)
         {
-            if(2*neighborsCount <= edgesCount - 2)
+            if (2 * neighborsCount <= edgesCount - 2)
             {
                 throw new ArgumentException($"Rule not possible for - Edges : {edgesCount} , Neighbors : {neighborsCount}");
             }
@@ -24,7 +24,7 @@ namespace BridgeBot.Rules
 
             bool makeDualEdges = EdgesCount == 2 * NeighborsCount;
 
-            foreach(Cell? neighbor in neighbors)
+            foreach (Cell? neighbor in neighbors)
             {
                 if (neighbor is null)
                     continue;
@@ -40,11 +40,11 @@ namespace BridgeBot.Rules
 
         public override bool CanApply(BridgePuzzle puzzle, Cell cell)
         {
-            List<Tuple<Cell?,int>> remainingEdges = puzzle.RemainingCellEdges(cell);
+            List<Tuple<Cell?, int>> remainingEdges = puzzle.RemainingCellEdges(cell);
 
             int neighborCount = 0;
             int edgesToCreate = 0;
-            for(int i=0;i<4;i++)
+            for (int i = 0; i < 4; i++)
             {
                 Tuple<Cell?, int> edgeCellPair = remainingEdges[i];
                 Cell? neighbor = edgeCellPair.Item1;
@@ -60,7 +60,7 @@ namespace BridgeBot.Rules
                 edgesToCreate += edge;
             }
 
-            edgesToCreate = Math.Min(edgesToCreate, puzzle.MaxCellEdges(cell)-puzzle.CellEdgesCount(cell));
+            edgesToCreate = Math.Min(edgesToCreate, puzzle.MaxCellEdges(cell) - puzzle.CellEdgesCount(cell));
 
             if (edgesToCreate == EdgesCount && neighborCount == NeighborsCount)
                 return true;

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace BridgeBot.Models
 {
-        public enum Difficulty
-        {
-            Easy,
-            Medium,
-            Hard,
-            ExtraHard
-        }
+    public enum Difficulty
+    {
+        Easy,
+        Medium,
+        Hard,
+        ExtraHard
+    }
 }

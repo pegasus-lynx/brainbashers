@@ -10,7 +10,7 @@ namespace BridgeSolver.Models
 {
     public class GridBridgeModel : AbstractBridgeModel
     {
-        public GridBridgeModel(int[,] grid ,int size) : base(size)
+        public GridBridgeModel(int[,] grid, int size) : base(size)
         {
             Grid = InitializeCellGrid(grid, size);
         }
@@ -83,35 +83,32 @@ namespace BridgeSolver.Models
             }
 
 
-            switch(val)
+            return val switch
             {
-                case '1':
-                    return 1;
-                case '2':
-                    return 2;
-                default:
-                    return 0;
-            }
+                '1' => 1,
+                '2' => 2,
+                _ => 0,
+            };
         }
 
         public IDictionary<DirectionEnum, Cell> CellNeighbors(Cell c)
         {
-            Dictionary<DirectionEnum, Cell> neighbors = new();
+            Dictionary<DirectionEnum, Cell> neighbors = [];
 
             if (c.Position is null)
                 return neighbors;
 
-            foreach(DirectionEnum direction in GridMoves)
+            foreach (DirectionEnum direction in GridMoves)
             {
                 Vector move = Vector.GetUnitVector(direction);
                 Point p = c.Position + move;
 
-                while(VerifyBounds(p))
+                while (VerifyBounds(p))
                 {
                     Cell curr = Grid![p.X, p.Y];
-                    if(!IsEmpty(curr))
+                    if (!IsEmpty(curr))
                     {
-                        if(!IsEdge(curr))
+                        if (!IsEdge(curr))
                         {
                             neighbors.Add(direction, curr);
                         }
@@ -119,7 +116,7 @@ namespace BridgeSolver.Models
                         break;
                     }
 
-                    p = p + move;
+                    p += move;
                 }
             }
 
@@ -128,15 +125,15 @@ namespace BridgeSolver.Models
 
         public IDictionary<DirectionEnum, Edge> CellEdges(Cell c)
         {
-            Dictionary<DirectionEnum, Edge> cellEdges = new();
+            Dictionary<DirectionEnum, Edge> cellEdges = [];
 
             if (c.Position is null || !VerifyBounds(c.Position))
                 return cellEdges;
-            
+
             var neighbors = CellNeighbors(c);
 
 
-            foreach(DirectionEnum dir in neighbors.Keys)
+            foreach (DirectionEnum dir in neighbors.Keys)
             {
                 cellEdges[dir] = new Edge(c.Position, neighbors[dir].Position!, EdgesCount(c, neighbors[dir]));
             }
@@ -153,17 +150,17 @@ namespace BridgeSolver.Models
                 return;
 
             Vector move = Vector.GetUnitVector(c1.Position, c2.Position);
-            
+
             if (move.DeltaX == 0 && move.DeltaY == 0)
                 return;
 
             bool canMakeEdge = true;
-            for(Point p = c1.Position + move; p != c2.Position; p = p+move)
+            for (Point p = c1.Position + move; p != c2.Position; p += move)
             {
                 Cell c = Grid![p.X, p.Y];
                 if (!IsEmpty(c))
                 {
-                    if((move.DeltaX == 0 && c.Value[0] != 'h')
+                    if ((move.DeltaX == 0 && c.Value[0] != 'h')
                         || (move.DeltaY == 0 && c.Value[0] != 'v'))
                     {
                         canMakeEdge = false;
@@ -172,15 +169,15 @@ namespace BridgeSolver.Models
                 }
             }
 
-            if(canMakeEdge)
+            if (canMakeEdge)
             {
                 int edgeCount = EdgesCount(c1, c2);
                 int newWeight = edgeCount + weight;
-                
+
                 if (newWeight > 2)
                     return;
 
-                for(Point p = c1.Position + move; p != c2.Position; p = p + move)
+                for (Point p = c1.Position + move; p != c2.Position; p += move)
                 {
                     Cell c = Grid![p.X, p.Y];
 
@@ -194,12 +191,12 @@ namespace BridgeSolver.Models
         {
             int edgeCount = EdgesCount(c1, c2);
             int newWeight = edgeCount - weight;
-            
+
             if (newWeight < 0 || weight == 0)
                 return;
 
             Vector move = Vector.GetUnitVector(c1.Position!, c2.Position!);
-            for(Point p = c1.Position! + move; p != c2.Position!; p = p + move)
+            for (Point p = c1.Position! + move; p != c2.Position!; p += move)
             {
                 Cell c = Grid![p.X, p.Y];
 
@@ -221,11 +218,11 @@ namespace BridgeSolver.Models
         public override IDictionary<DirectionEnum, Point> CellNeighbors(Point p)
         {
             var cellNeighbors = CellNeighbors(Grid![p.X, p.Y]);
-            Dictionary<DirectionEnum, Point> pointNeighbors = new();
-            foreach(DirectionEnum key in cellNeighbors.Keys)
+            Dictionary<DirectionEnum, Point> pointNeighbors = [];
+            foreach (DirectionEnum key in cellNeighbors.Keys)
             {
                 Point? position = cellNeighbors[key].Position;
-                if(position is not null)
+                if (position is not null)
                     pointNeighbors.Add(key, position);
             }
 
@@ -236,7 +233,7 @@ namespace BridgeSolver.Models
         {
             throw new NotImplementedException();
         }
-        
+
         public override int EdgesCount(Point p1, Point p2)
         {
             if (!VerifyBounds(p1) || !VerifyBounds(p2))
@@ -264,7 +261,7 @@ namespace BridgeSolver.Models
             return (p.X >= 0 && p.X < Size) && (p.Y >= 0 && p.Y < Size);
         }
 
-        private Cell[,] InitializeCellGrid(int[,] grid, int size)
+        private static Cell[,] InitializeCellGrid(int[,] grid, int size)
         {
             Cell[,] _grid = new Cell[size, size];
             for (int i = 0; i < size; i++)
@@ -285,9 +282,9 @@ namespace BridgeSolver.Models
             if (c.Position is null)
                 return false;
 
-            if(VerifyBounds(c.Position))
+            if (VerifyBounds(c.Position))
                 return c.Value[0] == 'h' || c.Value[0] == 'v';
-            
+
             return false;
         }
 
@@ -308,13 +305,13 @@ namespace BridgeSolver.Models
             }
 
             Console.WriteLine("*********************** Bridge Puzzle ****************************");
-            for(int i=0;i<Size;i++)
+            for (int i = 0; i < Size; i++)
             {
-                for(int j=0;j<Size;j++)
+                for (int j = 0; j < Size; j++)
                 {
                     string val = Grid[i, j].Value;
 
-                    if(val.StartsWith('h'))
+                    if (val.StartsWith('h'))
                     {
                         Console.Write(val[1] == '1' ? "--" : "==");
                     }
