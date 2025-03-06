@@ -77,7 +77,7 @@ namespace BridgeSolver.Models
 
             string valString = fc.Value;
 
-            if (valString[0] != 'h' || valString[0] != 'v')
+            if (valString[0] != 'h' && valString[0] != 'v')
                 return 0;
 
             char val;
@@ -120,13 +120,27 @@ namespace BridgeSolver.Models
                 while (VerifyBounds(p))
                 {
                     Cell curr = Grid![p.X, p.Y];
+
                     if (!IsEmpty(curr))
                     {
-                        if (!IsEdge(curr))
+                        if(IsEdge(curr))
                         {
-                            neighbors.Add(direction, curr);
+                            if(direction == DirectionEnum.Up || direction == DirectionEnum.Down)
+                            {
+                                if (curr.Value[0] != 'v')
+                                    break;
+                            }
+                            else
+                            {
+                                if (curr.Value[0] != 'h')
+                                    break;
+                            }
+
+                            p += move;
+                            continue;
                         }
 
+                        neighbors.Add(direction, curr);
                         break;
                     }
 
