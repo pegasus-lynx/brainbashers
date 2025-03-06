@@ -1,6 +1,7 @@
 ﻿using BrainBashersSolver.Common;
 using BrainBashersSolver.Common.Abstract;
 using BridgeSolver.Models;
+using BridgeSolver.Solvers;
 using System.Diagnostics;
 
 namespace BridgeSolver
@@ -17,6 +18,8 @@ namespace BridgeSolver
             {
                 throw new NotImplementedException();
             }
+
+            Solver = new RuleBasedBridgeSolver();
         }
 
         public override void Print(bool solved = false)
@@ -26,6 +29,20 @@ namespace BridgeSolver
 
         public override void Solve()
         {
+            if(Model is null)
+            {
+                Console.WriteLine("No Model Loaded");
+                return;
+            }
+
+            if(Solver is null)
+            {
+                Console.WriteLine("No Solver Loaded");
+                return;
+            }
+
+
+            Solver.Solve(Model);
         }
 
 
@@ -109,6 +126,7 @@ namespace BridgeSolver
         }
 
         private AbstractBridgeModel? Model { get; set; }
+        private AbstractBridgeSolver? Solver { get; set; }
 
     }
 }

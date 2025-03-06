@@ -10,7 +10,11 @@ namespace BridgeSolver
         {
             Console.WriteLine("Hello, Bridge Solver welcomes you !!");
             Console.WriteLine("Parsing arguments ....");
-            bool success = ParseArguments(args, out BridgeOptions options);
+
+            // Disabled actual argument parsing algorithm.
+            //bool success = ParseArguments(args, out BridgeOptions options);
+
+            bool success = ParseArguments_Temp(args, out BridgeOptions options);
 
             if (!success)
             {
@@ -32,6 +36,12 @@ namespace BridgeSolver
             return 0;
         }
 
+        private static bool ParseArguments_Temp(string[] args, out BridgeOptions options)
+        {
+            options = new BridgeOptions();
+            options.PuzzleFile = "C:\\personal\\repos\\brainbashers\\Data\\0221-10-Easy.txt";
+            return true;
+        }
 
         private static bool ParseArguments(string[] args, out BridgeOptions options)
         {

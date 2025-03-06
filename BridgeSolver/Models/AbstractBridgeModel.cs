@@ -3,12 +3,9 @@ using BridgeSolver.Data;
 
 namespace BridgeSolver.Models
 {
-    public abstract class AbstractBridgeModel
+    public abstract class AbstractBridgeModel(int size)
     {
-        public AbstractBridgeModel(int size)
-        {
-            Size = size;
-        }
+        public abstract List<Point> Cells { get; }
 
         public abstract int MaxCellEdgesCount(Point p);
         public abstract int CellEdgesCount(Point p);
@@ -22,6 +19,6 @@ namespace BridgeSolver.Models
 
         public abstract void Print();
 
-        public int Size { get; private set; }
+        public int Size { get; private set; } = size;
     }
 }

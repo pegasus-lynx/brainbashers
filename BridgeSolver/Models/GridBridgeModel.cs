@@ -15,7 +15,21 @@ namespace BridgeSolver.Models
             Grid = InitializeCellGrid(grid, size);
         }
 
+        public override List<Point> Cells
+        {
+            get
+            {
+                List<Point> cells = new();
+                foreach(Cell cell in Grid)
+                {
+                    if (MaxCellEdgesCount(cell.Position!) > 0)
+                        cells.Add(cell.Position!);
+                }
 
+                return cells;
+            }
+        }
+        
         public int MaxCellEdgesCount(Cell c)
         {
             if (int.TryParse(c.Value, out int val))
@@ -205,15 +219,29 @@ namespace BridgeSolver.Models
             }
         }
 
-        public override int MaxCellEdgesCount(Point p)
-        {
-            return MaxCellEdgesCount(Grid[p.X, p.Y]);
-        }
+        //private IDictionary<DirectionEnum, Cell> AllNeighbors(Cell c)
+        //{
+        //    Dictionary<DirectionEnum, Cell> neighbors = [];
 
-        public override int CellEdgesCount(Point p)
-        {
-            return CellEdgesCount(Grid[p.X, p.Y]);
-        }
+        //    if (c.Position is null)
+        //        return neighbors;
+
+        //    foreach(DirectionEnum direction in GridMoves)
+        //    {
+        //        Vector move = Vector.GetUnitVector(direction);
+        //        Point p = c.Position + move;
+
+        //        while (VerifyBounds(p))
+        //        {
+
+        //        }
+        //    }
+        //}
+
+
+        public override int MaxCellEdgesCount(Point p) => MaxCellEdgesCount(Grid[p.X, p.Y]);
+
+        public override int CellEdgesCount(Point p) => CellEdgesCount(Grid[p.X, p.Y]);
 
         public override IDictionary<DirectionEnum, Point> CellNeighbors(Point p)
         {
@@ -229,10 +257,7 @@ namespace BridgeSolver.Models
             return pointNeighbors;
         }
 
-        public override IDictionary<DirectionEnum, Edge> CellEdges(Point p)
-        {
-            throw new NotImplementedException();
-        }
+        public override IDictionary<DirectionEnum, Edge> CellEdges(Point p) => CellEdges(Grid![p.X, p.Y]);
 
         public override int EdgesCount(Point p1, Point p2)
         {
@@ -241,7 +266,6 @@ namespace BridgeSolver.Models
 
             return EdgesCount(Grid![p1.X, p1.Y], Grid![p2.X, p2.Y]);
         }
-
 
         public override void CreateEdge(Point p1, Point p2, int weight)
         {
